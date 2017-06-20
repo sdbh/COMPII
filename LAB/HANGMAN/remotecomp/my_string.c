@@ -42,7 +42,6 @@ void my_string_destroy(MY_STRING* phMy_string)
       free(pMy_string);
       *phMy_string = NULL;
     }
-  
 }
 
 MY_STRING my_string_init_c_string(const char* c_string)
@@ -83,6 +82,8 @@ int my_string_get_capacity(MY_STRING hMy_string)
     {
       return pMy_string->capacity;
     }
+  else
+    return -3213452;
 }
 
 int my_string_get_size(MY_STRING hMy_string)
@@ -93,6 +94,8 @@ int my_string_get_size(MY_STRING hMy_string)
     {
       return pMy_string->size;
     }
+  else
+    return -3213452;
 }
 
 int my_string_compare(MY_STRING hLeft_string, MY_STRING hRight_string)
@@ -102,13 +105,13 @@ int my_string_compare(MY_STRING hLeft_string, MY_STRING hRight_string)
 
   int i, length;
 
-  if(my_string_get_size(hLeft_string) < my_string_get_size(hRight_string))
+  if(my_string_get_size(pLeft_string) < my_string_get_size(pRight_string))
     {
-    length = my_string_get_size(hLeft_string);
+    length = my_string_get_size(pLeft_string);
     }
   else
     {
-    length = my_string_get_size(hRight_string);
+    length = my_string_get_size(pRight_string);
     }
 
   for(i = 0; i < length; i++)
@@ -123,11 +126,11 @@ int my_string_compare(MY_STRING hLeft_string, MY_STRING hRight_string)
 	}
     }
 
-  if (my_string_get_size(hLeft_string) < my_string_get_size(hRight_string))
+  if (my_string_get_size(pLeft_string) < my_string_get_size(pRight_string))
     {
       return -1;
     }
-  else if(pLeft_string->data[i] > pRight_string->data[i])
+  else if(my_string_get_size(pLeft_string) > my_string_get_size(pRight_string))
     {
       return 1;
     }
@@ -229,7 +232,7 @@ Status my_string_insertion(MY_STRING hMy_string, FILE* fp)
     {
         return FAILURE;
     }
-    if( fp == NULL)
+    if(fp == NULL)
     {
         printf("Invalid file name\n");
         return FAILURE;
@@ -302,9 +305,12 @@ Status my_string_concat(MY_STRING hResult, MY_STRING hAppend)
   My_string* phResult = (My_string*) hResult;
   My_string* phAppend = (My_string*) hAppend;
   int i = 0;
+  
+  my_string_c_str(phAppend);
 
   while(phAppend->data[i] != '\0')
     {
+      //printf("This is the phAppend character at i: %c\n", phAppend->data[i]);
       phResult->data[phResult->size] = phAppend->data[i];
       phResult->size++;
       i++;
